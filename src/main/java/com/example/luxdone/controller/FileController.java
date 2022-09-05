@@ -51,6 +51,7 @@ public class FileController {
     }
 
     @DeleteMapping("/{fileId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteFile(@PathVariable final UUID fileId) throws NotFoundException {
         fileService.deleteFile(fileId);
     }
