@@ -1,0 +1,56 @@
+### API to save file.
+# Supported file extensions: .html, .json, .jpg
+# Returns uuid of saved file.
+# Returns 400 HTTP status when file is empty or with wrong extension.
+POST http://localhost:8080/files/
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="sampleapp2.html"
+
+< samplehtml2.html
+--boundary--
+
+> {% client.global.set("fileId", response.body); %}
+
+### API to get file.
+# @fileId = Uuid of file.
+# Returns file
+# Returns 404 HTTP status when file not found.
+# Returns 400 HTTP status when file is not in READY state
+GET http://localhost:8080/files/{{fileId}}
+
+### API to update file.
+# @fileId = Uuid of file.
+# Returns uuid of updated file
+# Returns 404 HTTP status when file not found.
+# Returns 400 HTTP status when file is not in READY state
+# Returns 400 HTTP status when file extension is incompatible
+PUT http://localhost:8080/files/{{fileId}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="samplehtml2.html"
+
+< samplehtml2.html
+--boundary--
+
+### API to remove file (set file status to TO_BE_DELETED).
+# @fileId = Uuid of file.
+# Returns 404 HTTP status when file not found.
+# Returns 400 HTTP status when file is not in READY state
+# Returns 400 HTTP status when file extension is incompatible
+DELETE http://localhost:8080/files/{{fileId}}
+
+### API to get all metadata.
+# Sorted by filenames
+# @page = Page number
+# @size = Page size
+# Returns array of metadata
+GET http://localhost:8080/metadata?page=0&size=2
+
+### API to get file metadata.
+# @fileId = Uuid of file
+# Returns metadata
+# Returns 404 HTTP status when file metadata not found.
+GET http://localhost:8080/metadata/{{fileId}}
